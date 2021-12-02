@@ -8,36 +8,43 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace FormApp
+namespace program
 {
     public partial class Form1 : Form
     {
+        DinnerParty dinnerParty;
         public Form1()
         {
             InitializeComponent();
+
+            dinnerParty = new DinnerParty((int)numericUpDown1.Value,
+                healthyBox.Checked, fancyBox.Checked);
+
+            DisplayDinnerPartyCost();
         }
 
-        private void changeText_Click(object sender, EventArgs e)
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
-            if(enableCheckbox.Checked == true)
-            {
-                if(labelToChange.Text == "Z prawej")
-                {
-                    labelToChange.Text = "Z lewej";
-                    labelToChange.TextAlign = ContentAlignment.MiddleLeft;
-                }
-                else
-                {
-                    labelToChange.Text = "Z prawej";
-                    labelToChange.TextAlign = ContentAlignment.MiddleRight;
-                }
+            dinnerParty.NumberOfPeople = (int)numericUpDown1.Value;
+            DisplayDinnerPartyCost();
+        }
 
-            }
-            else
-            {
-                labelToChange.Text = "Mozliwosc zmiany textu zostala wylaczona";
-                labelToChange.TextAlign = ContentAlignment.MiddleCenter;
-            }
+        private void fancyBox_CheckedChanged(object sender, EventArgs e)
+        {
+            dinnerParty.FancyDecorations = fancyBox.Checked;
+            DisplayDinnerPartyCost();
+        }
+
+        private void healthyBox_CheckedChanged(object sender, EventArgs e)
+        {
+            dinnerParty.HealthyOption = healthyBox.Checked;
+            DisplayDinnerPartyCost();
+        }
+
+        private void DisplayDinnerPartyCost()
+        {
+            decimal Cost = dinnerParty.Cost;
+            costLabel.Text = Cost.ToString("c");
         }
     }
 }
